@@ -1,0 +1,28 @@
+services:
+  certbot_init_msg:
+    image: nginx
+    command: bash -c :' > /msg/in'
+    volumes:
+       - certbot_msg:/msg
+
+  certbot_init_nginx:
+    image: nginx
+    depends_on:
+      certbot_init_msg:
+        condition: service_started
+    command: bash -c 'nginx && tail -f /msg/in | head -n 1 && nginx -s stop'
+    volumes:
+      - ./nginx/config/nginx.conf:/etc/nginx/nginx.conf:ro
+      - certbot_msg:/msg
+
+  certbot_init:
+    image: nginx # todo: use certbot image
+    depends_on:
+      certbot_init_msg:
+        condition: service_started
+    command: bash -c 'echo done > /msg/in' # todo: run certbot, then echo
+    volumes:
+      - certbot_msg:/msg
+
+volumes:
+  certbot_msg:
