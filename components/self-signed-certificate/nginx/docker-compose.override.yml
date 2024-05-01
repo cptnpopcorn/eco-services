@@ -1,0 +1,8 @@
+services:
+  nginx:
+    depends_on:
+      create_self_signed:
+        condition: service_completed_successfully
+    volumes:
+      - ../../components/self-signed-certificate/nginx/conf/location-self-signed-certificate.conf:/etc/nginx/location/self-signed-certificate.conf
+      - self_cert:/var/www/self-cert

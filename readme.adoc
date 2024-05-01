@@ -1,0 +1,8 @@
+= Eco du Boiron Docker Services
+
+== Structure
+
+[horizontal]
+xref:components/readme.adoc[components/]:: reusable docker files, scripts and configurations
+servers/:: compose files, scripts and configurations to run specific servers
+xref:secrets/readme.adoc[secrets/]:: private configuration, to be kept out of git

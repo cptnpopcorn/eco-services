@@ -1,0 +1,15 @@
+services:
+  create_self_signed:
+    image: alpine/openssl
+    environment:
+      - DIR=/etc/self_cert
+      - COUNTRY=${COUNTRY}
+      - ORG=${ORG}
+      - DOMAIN=${DOMAIN}
+    entrypoint: create-keys.sh
+    volumes:
+      - ./openssl/create-keys.sh:/usr/local/bin/create-keys.sh
+      - self_cert:/etc/self_cert
+
+volumes:
+  self_cert:

@@ -1,0 +1,12 @@
+include:
+  - path:
+    - ../../components/certbot-nginx/docker-compose.yml
+    - ../../components/self-signed-certificate/nginx/docker-compose.override.yml
+    env_file:
+      - ../../secrets/common/common.env
+      - ../../secrets/services/services.env
+  - path:
+    - ../../components/self-signed-certificate/docker-compose.yml
+    env_file:
+      - ../../secrets/common/common.env
+      - ../../secrets/services/services.env

@@ -1,0 +1,27 @@
+server {
+	listen 80;
+	server_name ${DOMAIN};
+
+	location / {
+  	return 301 https://$host$request_uri;
+  }  
+
+	include http-location/*.conf;
+	include location/*.conf;
+}
+
+server {
+	listen 443 ssl;
+	server_name ${DOMAIN};
+
+	ssl_certificate /etc/letsencrypt/live/${DOMAIN}/fullchain.pem;
+	ssl_certificate_key /etc/letsencrypt/live/${DOMAIN}/privkey.pem;
+
+	location / {
+			return 200 'nothing here';
+			add_header Content-Type text/plain;
+	}
+
+	include https-location/*.conf;
+	include location/*.conf;
+}
