@@ -1,0 +1,12 @@
+server {
+	listen 443 ssl;
+	server_name ${IOTPREFIX}.${DOMAIN};
+
+	ssl_certificate /etc/letsencrypt/live/${IOTPREFIX}.${DOMAIN}/fullchain.pem;
+	ssl_certificate_key /etc/letsencrypt/live/${IOTPREFIX}.${DOMAIN}/privkey.pem;
+
+	location / {
+		return 200 'this will be the home of the home automation';
+		add_header Content-Type text/plain;
+	}
+}
