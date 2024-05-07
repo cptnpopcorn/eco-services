@@ -25,3 +25,13 @@ server {
 	include https-location/*.conf;
 	include location/*.conf;
 }
+
+server {
+	listen 80 default_server;
+	listen 443 ssl default_server;
+
+	ssl_certificate /etc/letsencrypt/live/${DOMAIN}/fullchain.pem;
+	ssl_certificate_key /etc/letsencrypt/live/${DOMAIN}/privkey.pem;
+
+	return 301 $scheme://${DOMAIN};
+}
