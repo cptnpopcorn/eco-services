@@ -10,7 +10,8 @@ services:
     depends_on:
       certbot_init_msg:
         condition: service_completed_successfully
-    entrypoint: sh -c 'nginx && tail -f /msg/in | head -n 1 && nginx -s stop'
+    entrypoint: sh
+    command: -c 'nginx && tail -f /msg/in | head -n 1 && nginx -s stop'
     ports:
       - 80:80
     volumes:
@@ -26,8 +27,11 @@ services:
         condition: service_started
     environment:
       - DOMAIN=${DOMAIN}
-    entrypoint: sh -c "certbot certonly --config /etc/certbot/cli.ini -d ${DOMAIN} && echo done > /msg/in"
+      - DOMAINPREFIXES
+    entrypoint: sh
+    command: /usr/lib/local/create-cert.sh
     volumes:
+      - ./certbot/create-cert.sh:/usr/lib/local/create-cert.sh
       - ./certbot/conf/cli.ini:/etc/certbot/cli.ini:ro
       - certbot_www:/var/www/certbot
       - certbot_msg:/msg
