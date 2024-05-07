@@ -1,3 +1,8 @@
+geo $is_internal {
+	default 0;
+	10.0.0.0/8 1;
+}
+
 server {
 	listen 443 ssl;
 	server_name ${IOTPREFIX}.${DOMAIN};
@@ -6,6 +11,9 @@ server {
 	ssl_certificate_key /etc/letsencrypt/live/${IOTPREFIX}.${DOMAIN}/privkey.pem;
 
 	location / {
+		if ( $is_internal ) {
+			return 200 'home automation server internal accesss';
+		}
 		return 200 'this will be the home of the home automation';
 		add_header Content-Type text/plain;
 	}
