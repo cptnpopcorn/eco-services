@@ -26,7 +26,7 @@ services:
       certbot_init_nginx:
         condition: service_started
     environment:
-      - DOMAIN=${DOMAIN}
+      - DOMAIN=${DOMAIN:?err}
       - DOMAINPREFIXES
     entrypoint: sh
     command: /usr/lib/local/create-cert.sh
@@ -43,7 +43,7 @@ services:
       certbot_init_nginx:
         condition: service_completed_successfully
     environment:
-      - DOMAIN=${DOMAIN}
+      - DOMAIN=${DOMAIN:?err}
     ports:
       - 80:80
       - 443:443

@@ -2,9 +2,9 @@ services:
   mqtt-broker:
     image: eclipse-mosquitto
     environment:
-      - UID=${UID}
-      - GID=${GID}
-      - MOSQUITTO_PASSWORD_FILE=${MOSQUITTO_PASSWORD_FILE}
+      - UID=${UID:?err}
+      - GID=${GID:?err}
+      - MOSQUITTO_PASSWORD_FILE=${MOSQUITTO_PASSWORD_FILE:?err}
     user: "${UID}:${GID}"
     volumes:
       - ./mosquitto/conf/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro

@@ -3,9 +3,9 @@ services:
     image: alpine/openssl
     environment:
       - DIR=/etc/self_cert
-      - COUNTRY=${COUNTRY}
-      - ORG=${ORG}
-      - DOMAIN=${DOMAIN}
+      - COUNTRY=${COUNTRY:?err}
+      - ORG=${ORG:?err}
+      - DOMAIN=${DOMAIN:?err}
     entrypoint: create-keys.sh
     volumes:
       - ./openssl/create-keys.sh:/usr/local/bin/create-keys.sh
