@@ -10,7 +10,13 @@ services:
     volumes:
       - ./openssl/check-vars.sh:/usr/local/bin/check-vars.sh
       - ./openssl/create-keys.sh:/usr/local/bin/create-keys.sh
-      - self_signed:/etc/self_signed
+      - cert_ca_priv:/etc/self_signed/ca/priv
+      - cert_ca_pub:/etc/self_signed/ca/pub
+      - cert_srv_priv:/etc/self_signed/srv/priv
+      - cert_srv_pub:/etc/self_signed/srv/pub
 
 volumes:
-  self_signed:
+  cert_ca_priv:
+  cert_ca_pub:
+  cert_srv_priv:
+  cert_srv_pub:

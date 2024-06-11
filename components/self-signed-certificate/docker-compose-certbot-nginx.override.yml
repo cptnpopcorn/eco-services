@@ -5,4 +5,5 @@ services:
         condition: service_completed_successfully
     volumes:
       - ../../components/self-signed-certificate/nginx/conf/location-self-signed-certificate.conf:/etc/nginx/location/self-signed-certificate.conf
-      - self_signed:/var/www/self-signed
+      - cert_ca_pub:/var/www/self-signed/ca/pub
+      - cert_srv_pub:/var/www/self-signed/srv/pub
