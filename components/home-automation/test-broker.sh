@@ -1,5 +1,3 @@
 #!/bin/bash
-[ -z "$@" ] && CMD="up" || CMD="run -i mqtt-broker $@"
-export UID=$(id -u)
-export GID=$(id -g)
-docker compose --env-file test/test.env $CMD
+[ -z "$@" ] && CMD="up -d" || CMD="run -i --rm mqtt-broker $@"
+docker compose --env-file test/test.env "${CMD}"

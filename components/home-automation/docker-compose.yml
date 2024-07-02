@@ -1,18 +1,14 @@
 services:
   mqtt-broker:
     image: eclipse-mosquitto
-    environment:
-      - UID=${UID:?err}
-      - GID=${GID:?err}
-      - MOSQUITTO_PASSWORD_FILE=${MOSQUITTO_PASSWORD_FILE:?err}
-    user: "${UID}:${GID}"
     volumes:
       - ./mosquitto/conf/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
       - mosquitto-data:/mosquitto/data
       - mosquitto-log:/mosquitto/log
-      - ${MOSQUITTO_PASSWORD_FILE}:/mosquitto/passwd:ro
+#      - ${MOSQUITTO_PASSWORD_FILE}:/mosquitto/passwd:ro
+    entrypoint: []
     ports:
-      - 1883:1883
+      - "1883:1883"
 
 volumes:
   mosquitto-data:
