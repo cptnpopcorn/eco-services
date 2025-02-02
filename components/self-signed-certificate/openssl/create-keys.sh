@@ -8,7 +8,7 @@ FILE_PUB_SRV="$DIR"/"srv/pub/srv"
 
 [ -e "$FILE_PUB_CA.crt" ] && echo "CA certificate already present" || { \
 echo "creating new CA certificate"; \
-openssl req -days 36500 -newkey rsa:2048 -nodes -extensions v3_ca -keyout "$FILE_PRIV_CA.key" -subj "/C=$COUNTRY/O=$ORG/CN=$DOMAIN" -x509 -out "$FILE_PUB_CA.crt"; \
+openssl req -days 36500 -newkey rsa:2048 -nodes -extensions v3_ca -keyout "$FILE_PRIV_CA.key" -subj "/C=$COUNTRY/O=$ORG/OU=Root CA/CN=$DOMAIN" -x509 -out "$FILE_PUB_CA.crt"; \
 }
 
 [ -e "$FILE_PUB_SRV.csr" ] && echo "server signing request already present" || { \
