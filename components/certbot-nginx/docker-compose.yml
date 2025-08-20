@@ -27,7 +27,7 @@ services:
         condition: service_started
     environment:
       - DOMAIN=${DOMAIN:?err}
-      - DOMAINPREFIXES
+#      - DOMAINPREFIXES=${DOMAINPREFIXES}
     entrypoint: sh
     command: /usr/lib/local/create-cert.sh
     volumes:
