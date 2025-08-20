@@ -1,9 +1,0 @@
-services:
-  certbot_init:
-    env_file:
-      - ../../components/home-automation/nginx/home-automation.env
-  nginx:
-    env_file:
-      - ../../components/home-automation/nginx/home-automation.env
-    volumes:
-      - ../../components/home-automation/nginx/templates/home-automation.conf.template:/etc/nginx/templates/home-automation.conf.template

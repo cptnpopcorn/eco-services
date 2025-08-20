@@ -12,9 +12,9 @@ server {
 
 	location / {
 		if ( $is_internal ) {
-			return 200 'home automation server internal accesss';
+			return 200 'IoT server internal accesss';
 		}
-		return 200 'this will be the home of the home automation';
+		return 200 'this will be the home of the IoT server';
 		add_header Content-Type text/plain;
 	}
 }

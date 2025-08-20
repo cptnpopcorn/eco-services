@@ -8,5 +8,5 @@ provides a private key + self-signed certificate in a dedicated volume
 +
 also provides a nginx template to read the certificate via http
 
-home-automation/::
-MQTT broker and home assistant
+mqtt/::
+MQTT broker and possibly some related web content

@@ -1,0 +1,9 @@
+services:
+  certbot_init:
+    env_file:
+      - ../../components/mqtt/nginx/mqtt.env
+  nginx:
+    env_file:
+      - ../../components/mqtt/nginx/mqtt.env
+    volumes:
+      - ../../components/mqtt/nginx/templates/mqtt.conf.template:/etc/nginx/templates/mqtt.conf.template
