@@ -8,7 +8,7 @@ services:
       - DOMAIN=${DOMAIN:?err}
     entrypoint: create-keys.sh
     volumes:
-      - ./openssl/check-vars.sh:/usr/local/bin/check-vars.sh
+      - ./openssl/ssl-functions.sh:/usr/local/bin/ssl-functions.sh
       - ./openssl/create-keys.sh:/usr/local/bin/create-keys.sh
       - cert_ca_priv:/etc/self_signed/ca/priv
       - cert_ca_pub:/etc/self_signed/ca/pub
