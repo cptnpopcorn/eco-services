@@ -1,0 +1,12 @@
+services:
+
+  mqtt-broker:
+    depends_on:
+      create_self_signed:
+        condition: service_completed_successfully
+
+    volumes:
+      - ./mosquitto/conf/mosquitto-services.conf:/mosquitto/config/mosquitto.conf:ro
+      - cert_ca_pub:/etc/self_signed/ca/pub
+      - cert_srv_priv:/etc/self_signed/srv/priv
+      - cert_srv_pub:/etc/self_signed/srv/pub

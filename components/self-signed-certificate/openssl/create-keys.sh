@@ -19,4 +19,5 @@ FILE_PUB_SRV="${DIR}"/"srv/pub/srv"
 [ -e "${FILE_PUB_SRV}.crt" ] && echo "server sertificate already present" || { \
 echo "creating server private key and public certificate"; \
 create_and_sign_key "${DOMAIN}" "${FILE_PRIV_SRV}" "${FILE_PUB_SRV}"; \
+chmod go+r "${FILE_PRIV_SRV}.key"
 }

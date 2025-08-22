@@ -11,3 +11,6 @@ include:
     env_file:
       - ../../secrets/common/common.env
       - ../../secrets/services/services.env
+  - path:
+    - ../../components/mqtt/docker-compose.yml
+    - ../../components/mqtt/docker-compose-mqtt.override.yml
