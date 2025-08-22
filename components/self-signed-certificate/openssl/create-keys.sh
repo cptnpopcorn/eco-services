@@ -17,3 +17,20 @@ create_ca_cert "${DOMAIN}"; \
 echo "creating server private key and public certificate"; \
 create_and_sign_key "${DOMAIN}" "${FILE_PRIV_SRV}" "${FILE_PUB_SRV}"; \
 }
+
+for key in $@
+do
+  FILE_PRIV_KEY=$(priv_file $key)
+  FILE_PUB_KEY=$(pub_file $key)
+  for f in "${FILE_PRIV_KEY} ${FILE_PUB_KEY}"; do mkdir -p $(dirname "${f}"); done
+  [ -e "${FILE_PUB_KEY}.crt" ] && echo "${key} certificate already present" || { \
+  echo "creating ${key} private key and public certificate"; \
+  create_and_sign_key "${key}" "${FILE_PRIV_KEY}" "${FILE_PUB_KEY}"; \
+	echo
+	echo "${key}.key:"
+	cat "${FILE_PRIV_KEY}.key"
+	echo
+	echo "${key}.crt:"
+	cat "${FILE_PUB_KEY}.crt";
+}
+done

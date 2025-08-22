@@ -6,7 +6,7 @@ services:
       - COUNTRY=${COUNTRY:?err}
       - ORG=${ORG:?err}
       - DOMAIN=${DOMAIN:?err}
-    entrypoint: create-keys.sh
+    entrypoint: create-keys.sh ${SELF_SIGN_KEYS:-}
     volumes:
       - ./openssl/ssl-functions.sh:/usr/local/bin/ssl-functions.sh
       - ./openssl/create-keys.sh:/usr/local/bin/create-keys.sh
