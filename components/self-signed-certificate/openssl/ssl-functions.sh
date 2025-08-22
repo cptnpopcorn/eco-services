@@ -22,4 +22,5 @@ create_and_sign_key()
 openssl req -newkey rsa:2048 -nodes -keyout "$2.key" -subj "/C=${COUNTRY}/O=${ORG}/CN=$1" -addext "subjectAltName=DNS:$1" -addext "basicConstraints=critical,CA:FALSE" -out "$3.csr"
 openssl x509 -req -CA "${FILE_PUB_CA}.crt" -CAkey "${FILE_PRIV_CA}.key" -days 36500 -CAcreateserial -copy_extensions copyall -in "$3.csr" -out "$3.crt"
 chmod go+r "$2.key"
+chmod go+x $(dirname "$2.key")
 }
