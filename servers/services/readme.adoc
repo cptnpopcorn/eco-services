@@ -1,0 +1,5 @@
+## Scripts
+
+[horizontal]
+`create-self-signed-key.sh _name_`:: create a self-signed key with CN=_name_
+`get-self-signed-certificate.sh _name_`:: gets the `_name_.crt` certificate where _name_ is `ca` or `srv` 
