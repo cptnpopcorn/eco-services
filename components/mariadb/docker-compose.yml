@@ -1,0 +1,16 @@
+services:
+  mariadb:
+    image: mariadb:12.1
+    restart: always
+    volumes:
+      - mariadb_conf:/config
+      - mariadb_data:/var/lib/mysql
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=${MARIADB_TZ:?err}
+      - MYSQL_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD:?err}
+
+volumes:
+  mariadb_conf:
+  mariadb_data:

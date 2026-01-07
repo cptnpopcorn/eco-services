@@ -14,3 +14,9 @@ include:
   - path:
     - ../../components/mqtt/docker-compose.yml
     - ../../components/mqtt/docker-compose-mqtt.override.yml
+  - path:
+    - ../../components/mariadb/docker-compose.yml
+    env_file:
+      - ../../secrets/common/common.env
+      - ../../secrets/services/services.env
+
