@@ -1,0 +1,8 @@
+services:
+  librebooking:
+    depends_on:
+      - mariadb
+    environment: 
+      - LB_DATABASE_HOSTSPEC=mariadb
+      - LB_INSTALL_PASSWORD=${LB_INSTALL_PWD:?err}
+      - LB_DEFAULT_TIMEZONE=${MARIADB_TZ:?err}
