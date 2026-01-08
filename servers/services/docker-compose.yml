@@ -21,7 +21,7 @@ include:
       - ../../secrets/services/services.env
   - path:
     - ../../components/librebooking/docker-compose.yml
-    - ../../components/librebooking/docker-compose-librebooking-override.yml
+    - ../../components/librebooking/docker-compose-librebooking.override.yml
     env_file:
       - ../../secrets/common/common.env
       - ../../secrets/services/services.env

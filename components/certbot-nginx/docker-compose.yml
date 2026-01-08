@@ -51,6 +51,7 @@ services:
       - ./nginx/templates/main.conf.template:/etc/nginx/templates/main.conf.template:ro
       - ./nginx/conf/http-location-certbot.conf:/etc/nginx/http-location/certbot.conf:ro
       - certbot_www:/var/www/certbot:ro
+      - certbot_msg:/msg
       - letsencrypt_cert:/etc/letsencrypt:ro
 
   certbot_renew:

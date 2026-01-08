@@ -1,0 +1,7 @@
+services:
+  certbot_init:
+    env_file:
+      - ../../components/librebooking/nginx/librebooking.env
+  nginx:
+    env_file:
+      - ../../components/librebooking/nginx/librebooking.env

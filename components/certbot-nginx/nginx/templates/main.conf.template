@@ -3,7 +3,7 @@ server {
 	server_name ${DOMAIN};
 
 	location / {
-  	return 301 https://$host$request_uri;
+    return 301 https://$host$request_uri;
   }  
 
 	include http-location/*.conf;
@@ -33,5 +33,5 @@ server {
 	ssl_certificate /etc/letsencrypt/live/${DOMAIN}/fullchain.pem;
 	ssl_certificate_key /etc/letsencrypt/live/${DOMAIN}/privkey.pem;
 
-	return 301 $scheme://${DOMAIN};
+  return 301 $scheme://${DOMAIN}$request_uri;
 }
