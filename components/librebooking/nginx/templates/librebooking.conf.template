@@ -1,0 +1,15 @@
+server {
+    listen 443 ssl;
+    server_name ${RESAPREFIX}.${DOMAIN};
+
+    ssl_certificate /etc/letsencrypt/live/${RESAPREFIX}.${DOMAIN}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/${RESAPREFIX}.${DOMAIN}/privkey.pem;
+
+    location / {
+        proxy_pass http://librebooking:80;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}

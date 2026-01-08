@@ -3,6 +3,7 @@ include:
     - ../../components/certbot-nginx/docker-compose.yml
     - ../../components/self-signed-certificate/docker-compose-certbot-nginx.override.yml
     - ../../components/mqtt/docker-compose-certbot-nginx.override.yml
+    - ../../components/librebooking/docker-compose-certbot-nginx.override.yml
     env_file:
       - ../../secrets/common/common.env
       - ../../secrets/services/services.env

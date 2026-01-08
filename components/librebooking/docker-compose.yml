@@ -5,8 +5,6 @@ services:
       args:
         APP_GH_REF: "refs/tags/v4.0.0"
     restart: always
-    ports:
-      - "7780:80" # debug only, remove later
     volumes:
       - librebooking_conf:/config
       - librebooking_images:/var/www/html/uploads/images
