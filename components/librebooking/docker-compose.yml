@@ -9,13 +9,18 @@ services:
       - "7780:80" # debug only, remove later
     volumes:
       - librebooking_conf:/config
+      - librebooking_images:/var/www/html/uploads/images
+      - librebooking_attachments:/var/www/html/uploads/reservation
+      - ./conf/apache-librebooking-uploads.conf:/etc/apache2/conf-enabled/librebooking-uploads.conf:ro
     environment:
       - LB_DATABASE_NAME=librebooking
       - LB_DATABASE_USER=lb_user
       - LB_DATABASE_USER_PWD=${LB_DB_USER_PWD:?err}
       - LB_INSTALL_PASSWORD=${LB_INSTALL_PWD:?err}
-      # LB_DB_HOST needs to defined by root container, as an override
-      # LB_TZ needs to be defined matching the environment, as an override
+      # LB_DATABASE_HOSTSPEC needs to defined by root container, as an override
+      # LB_DEFAULT_TIMEZONE needs to be defined matching the environment, as an override
 
 volumes:
   librebooking_conf:
+  librebooking_images:
+  librebooking_attachments:
