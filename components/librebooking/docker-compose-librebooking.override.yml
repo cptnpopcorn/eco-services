@@ -5,6 +5,7 @@ services:
     environment: 
       - LB_DATABASE_HOSTSPEC=mariadb
       - LB_INSTALL_PASSWORD=${LB_INSTALL_PWD:?err}
+      - LB_DATABASE_PASSWORD=${LB_DB_USER_PWD:?err}
       - LB_DEFAULT_TIMEZONE=${MARIADB_TZ:?err}
     volumes:
       - ./conf/apache-librebooking-uploads.conf:/etc/apache2/conf-available/librebooking-uploads.conf:ro
