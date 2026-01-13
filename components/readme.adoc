@@ -15,5 +15,5 @@ MQTT broker and possibly some related web content
 mariadb/::
 MariaDB instance to be shared by other local services
 
-librebooking::
+librebooking/::
 Web-based reservation system, using mariadb
