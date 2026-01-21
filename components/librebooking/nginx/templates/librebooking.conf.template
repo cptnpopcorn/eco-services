@@ -13,3 +13,10 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
     }
 }
+
+server {
+    listen 80;
+    server_name ${RESAPREFIX}.${DOMAIN};
+
+    return 301 https://$server_name$request_uri;
+}
