@@ -1,0 +1,9 @@
+services:
+  create_self_signed:
+    volumes:
+      - cert_doorcontroller_priv:/etc/self_signed/doorcontroller/priv
+      - cert_doorcontroller_pub:/etc/self_signed/doorcontroller/pub
+
+volumes:
+  cert_doorcontroller_priv:
+  cert_doorcontroller_pub:

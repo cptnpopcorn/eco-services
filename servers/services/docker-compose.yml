@@ -9,9 +9,11 @@ include:
       - ../../secrets/services/services.env
   - path:
     - ../../components/self-signed-certificate/docker-compose.yml
+    - ../../components/door-controller/docker-compose-self-signed-certificate.override.yml
     env_file:
       - ../../secrets/common/common.env
       - ../../secrets/services/services.env
+      - ../../components/door-controller/self-signed-certificate.env
   - path:
     - ../../components/mqtt/docker-compose.yml
     - ../../components/mqtt/docker-compose-mqtt.override.yml
@@ -23,6 +25,12 @@ include:
   - path:
     - ../../components/librebooking/docker-compose.yml
     - ../../components/librebooking/docker-compose-librebooking.override.yml
+    env_file:
+      - ../../secrets/common/common.env
+      - ../../secrets/services/services.env
+  - path:
+    - ../../components/door-controller/docker-compose.yml
+    - ../../components/door-controller/docker-compose-door-controller.override.yml
     env_file:
       - ../../secrets/common/common.env
       - ../../secrets/services/services.env
