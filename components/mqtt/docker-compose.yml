@@ -1,7 +1,7 @@
 services:
   mqtt-broker:
     image: eclipse-mosquitto
-
+    restart: unless-stopped
     volumes:
       - ./mosquitto/conf/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
       - mosquitto-data:/mosquitto/data

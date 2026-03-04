@@ -41,6 +41,7 @@ services:
     depends_on:
       certbot_init_nginx:
         condition: service_completed_successfully
+    restart: unless-stopped
     environment:
       - DOMAIN=${DOMAIN:?err}
     ports:
@@ -59,6 +60,7 @@ services:
     depends_on:
       nginx:
         condition: service_started
+    restart: unless-stopped
     environment:
       - DOMAIN=${DOMAIN}
     entrypoint: sh -c "trap exit TERM; while ":"; do sleep 12h & wait $${!}; certbot renew; done;"

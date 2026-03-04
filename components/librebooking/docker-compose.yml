@@ -4,12 +4,12 @@ services:
       context: https://github.com/LibreBooking/docker.git#3.0.0
       args:
         APP_GH_REF: "refs/tags/v4.0.0"
-    restart: always
+    restart: unless-stopped
     volumes:
       - librebooking_conf:/config
-      - librebooking_images:/var/www/html/uploads/images
-      - librebooking_attachments:/var/www/html/uploads/reservation
-      - ./conf/apache-librebooking-uploads.conf:/etc/apache2/conf-enabled/librebooking-uploads.conf:ro
+      - librebooking_images:/var/www/html/Web/uploads/images
+      - librebooking_attachments:/var/www/html/Web/uploads/reservation
+      - ./conf/eco-logo.png:/var/www/html/Web/img/custom-logo.png
     environment:
       - LB_DATABASE_NAME=librebooking
       - LB_DATABASE_USER=lb_user
