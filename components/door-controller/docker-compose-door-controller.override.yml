@@ -9,9 +9,10 @@ services:
         condition: service_completed_successfully
     environment:
       - SITE="${SITE:?err}"
+      - DOMAIN="${DOMAIN:?err}"
       - LB_DB_USER_PWD=${LB_DB_USER_PWD:?err}
     command: >
-      --mqtt-broker ssl://mqtt-broker:8883
+      --mqtt-broker ssl://${DOMAIN}:8883
       --ca-file /etc/self_signed/ca/pub/ca.crt
       --client-cert /etc/self_signed/doorcontroller/pub/doorcontroller.crt
       --client-key /etc/self_signed/doorcontroller/priv/doorcontroller.key

@@ -5,6 +5,14 @@ services:
       create_self_signed:
         condition: service_completed_successfully
 
+    environment:
+      - DOMAIN="${DOMAIN:?err}"
+
+    networks:
+      default:
+        aliases:
+          - ${DOMAIN:?err}
+
     volumes:
       - ./mosquitto/conf/mosquitto-services.conf:/mosquitto/config/mosquitto.conf:ro
       - cert_ca_pub:/etc/self_signed/ca/pub
