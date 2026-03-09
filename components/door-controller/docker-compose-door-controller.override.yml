@@ -17,6 +17,7 @@ services:
       --client-cert /etc/self_signed/doorcontroller/pub/doorcontroller.crt
       --client-key /etc/self_signed/doorcontroller/priv/doorcontroller.key
       --site ${SITE:-}
+      --client-suffix services
       --db-host mariadb
       --db-name librebooking
       --db-user lb_user
