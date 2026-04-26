@@ -11,6 +11,7 @@ services:
       - SITE="${SITE:?err}"
       - DOMAIN="${DOMAIN:?err}"
       - LB_DB_USER_PWD=${LB_DB_USER_PWD:?err}
+      - DOOR_TOLERANCE_DURATION=${DOOR_TOLERANCE_DURATION:-0s}
     command: >
       --mqtt-broker ssl://${DOMAIN}:8883
       --ca-file /etc/self_signed/ca/pub/ca.crt
@@ -22,6 +23,7 @@ services:
       --db-name librebooking
       --db-user lb_user
       --db-pass ${LB_DB_USER_PWD}
+      --tolerance ${DOOR_TOLERANCE_DURATION}
     volumes:
       - cert_ca_pub:/etc/self_signed/ca/pub
       - cert_doorcontroller_priv:/etc/self_signed/doorcontroller/priv

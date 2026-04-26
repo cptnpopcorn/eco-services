@@ -1,6 +1,6 @@
 services:
   doorcontroller:
-    image: doorcontroller:v1.2.0
+    image: doorcontroller:v1.3.0
     build:
-      context: https://github.com/cptnpopcorn/doorlock-controller-docker.git#v1.2.0-v1.2.0
+      context: https://github.com/cptnpopcorn/doorlock-controller-docker.git#v1.3.0-v1.3.0
     restart: unless-stopped
