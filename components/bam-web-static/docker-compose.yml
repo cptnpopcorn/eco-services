@@ -1,0 +1,25 @@
+services:
+  bam_web_sftp_init:
+    image: alpine:3.22.4
+    volumes:
+      - bam_web_static:/web
+    command: sh -c "chown -R 1000:1000 /web"
+    restart: no
+
+  bam_web_sftp:
+    image: jmcombs/sftp:alpine
+    restart: unless-stopped
+    depends_on:
+      bam_web_sftp_init:
+        condition: service_completed_successfully
+    environment:
+      - BAM_WEB_STATIC_USR="${BAM_WEB_STATIC_USR:?err}"
+      - BAM_WEB_STATIC_PWD="${BAM_WEB_STATIC_PWD:?err}"
+    volumes:
+      - bam_web_static:/home/${BAM_WEB_STATIC_USR}/web
+      - bam_web_ssh:/etc/ssh
+    command: ${BAM_WEB_STATIC_USR}:${BAM_WEB_STATIC_PWD}:1000::web
+
+volumes:
+  bam_web_static:
+  bam_web_ssh:

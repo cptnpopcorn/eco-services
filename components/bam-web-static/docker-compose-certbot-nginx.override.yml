@@ -1,0 +1,13 @@
+services:
+  certbot_init:
+    env_file:
+      - ../../components/bam-web-static/nginx/bam.env
+  nginx:
+    env_file:
+      - ../../components/bam-web-static/nginx/bam.env
+    volumes:
+      - bam_web_static:/var/www/bam:ro
+      - ../../components/bam-web-static/nginx/templates/bam.conf.template:/etc/nginx/templates/bam.conf.template
+
+volumes:
+  bam_web_static:

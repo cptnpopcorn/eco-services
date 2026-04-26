@@ -1,0 +1,4 @@
+services:
+  bam_web_sftp:
+    ports:
+      - "2022:22"
