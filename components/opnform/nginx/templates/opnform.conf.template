@@ -1,0 +1,50 @@
+map $request_uri $opnform_api_uri {
+    ~^/api(/.*$) $1;
+    default $request_uri;
+}
+
+
+server {
+    listen 443 ssl;
+    server_name ${FORMSPREFIX}.${DOMAIN};
+    root /usr/share/nginx/html/public;
+
+    ssl_certificate /etc/letsencrypt/live/${FORMSPREFIX}.${DOMAIN}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/${FORMSPREFIX}.${DOMAIN}/privkey.pem;
+
+    location / {
+        proxy_http_version 1.1;
+        proxy_pass http://opnform-client:3000;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header X-Forwarded-Port $server_port;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "Upgrade";
+    }
+
+    location ~/(api|open|local\/temp|forms\/assets)/ {
+        set $original_uri $uri;
+        try_files $uri $uri/ /index.php$is_args$args;
+    }
+
+    location ~ \.php$ {
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        fastcgi_pass opnform-api:9000;
+        fastcgi_index index.php;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root/index.php;
+        fastcgi_param REQUEST_URI $opnform_api_uri;
+    }
+
+    # Deny access to . files
+    location ~ /\. {
+        deny all;
+    }
+}
+
+server {
+    listen 80;
+    server_name ${FORMSPREFIX}.${DOMAIN};
+
+    return 301 https://$server_name$request_uri;
+}

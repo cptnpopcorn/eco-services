@@ -1,0 +1,154 @@
+services:
+  opnform-init:
+    image: jhumanj/opnform-api:1.13.2
+    volumes:
+      - opnform-storage:/usr/share/nginx/html/storage
+    entrypoint: ["sh", "-c"]
+    command: >
+      "
+      mkdir -p /usr/share/nginx/html/storage/framework/views &&
+      mkdir -p /usr/share/nginx/html/storage/framework/cache &&
+      mkdir -p /usr/share/nginx/html/storage/framework/sessions &&
+      chmod -R 775 /usr/share/nginx/html/storage
+      "
+  opnform-api: &opnform-api-environment
+    image: jhumanj/opnform-api:1.13.2
+    volumes: &opnform-api-environment-volumes
+      - opnform-storage:/usr/share/nginx/html/storage:rw
+    environment: &opnform-api-env
+      FRONT_URL: https://${FORMSPREFIX:-}.${DOMAIN:-}
+      FRONT_API_SECRET: ${FORMS_FRONT_API_SECRET:-}
+      APP_NAME: ${FORMS_APP_NAME:-}
+      LOG_CHANNEL: ${FORMS_LOG_CHANNEL:-}
+      DB_CONNECTION: pgsql
+      DB_PORT: 5432
+      DB_DATABASE: ${FORMS_DB_DATABASE:-}
+      DB_USERNAME: ${FORMS_DB_USERNAME:-}
+      DB_PASSWORD: ${FORMS_DB_PASSWORD:-}
+      FILESYSTEM_DRIVER: local
+      BROADCAST_CONNECTION: log
+      CACHE_STORE: file
+      QUEUE_CONNECTION: sync
+      SESSION_DRIVER: file
+      SESSION_LIFETIME: 120
+      REDIS_PASSWORD: null
+      REDIS_PORT: 6379
+      MAIL_MAILER: ${FORMS_MAIL_MAILER:-}
+      MAIL_HOST: ${FORMS_MAIL_HOST:-}
+      MAIL_PORT: ${FORMS_MAIL_PORT:-}
+      MAIL_USERNAME: ${FORMS_MAIL_USERNAME:-}
+      MAIL_PASSWORD: ${FORMS_MAIL_PASSWORD:-}
+      MAIL_ENCRYPTION: ${FORMS_MAIL_ENCRYPTION:-}
+      MAIL_FROM_ADDRESS: ${FORMS_MAIL_FROM_ADDRESS:-}
+      MAIL_FROM_NAME: "${FORMS_APP_NAME:-}"
+      AWS_DEFAULT_REGION: us-east-1
+      PUSHER_APP_CLUSTER: mt1
+      MIX_PUSHER_APP_KEY: ${FORMS_PUSHER_APP_KEY}
+      MIX_PUSHER_APP_CLUSTER: ${FORMS_PUSHER_APP_CLUSTER}
+      JWT_TTL: 10080
+      JWT_REMEMBER_TTL: 43200
+      JWT_SECRET: ${FORMS_JWT_SECRET:-}
+      APP_ENV: production
+      APP_DEBUG: false
+      APP_URL: https://nginx
+      APP_KEY: ${FORMS_APP_KEY}
+      # Database settings
+      DB_HOST: opnform-db
+      REDIS_HOST: opnform-redis
+      # PHP Configuration
+      PHP_MEMORY_LIMIT: "1G"
+      PHP_MAX_EXECUTION_TIME: "600"
+      PHP_UPLOAD_MAX_FILESIZE: "64M"
+      PHP_POST_MAX_SIZE: "64M"
+      ZAPIER_ENABLED: ${FORMS_ZAPIER_ENABLED:-}
+    depends_on:
+      opnform-init:
+        condition: service_completed_successfully
+      opnform-db:
+        condition: service_healthy
+      opnform-redis:
+        condition: service_healthy # Depend on redis being healthy too
+    healthcheck:
+      test: ["CMD-SHELL", "php /usr/share/nginx/html/artisan about || exit 1"]
+      interval: 30s
+      timeout: 15s
+      retries: 3
+      start_period: 60s
+
+  opnform-api-worker:
+    <<: *opnform-api-environment
+    command: ["php", "artisan", "queue:work"]
+    environment:
+      <<: *opnform-api-env
+      APP_ENV: production
+    healthcheck:
+      test:
+        ["CMD-SHELL", "pgrep -f 'php artisan queue:work' > /dev/null || exit 1"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  opnform-api-scheduler:
+    <<: *opnform-api-environment
+    command: ["php", "artisan", "schedule:work"]
+    environment:
+      <<: *opnform-api-env
+      APP_ENV: production
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "php /usr/share/nginx/html/artisan app:scheduler-status --mode=check --max-minutes=3 || exit 1",
+        ]
+      interval: 60s
+      timeout: 30s
+      retries: 3
+      start_period: 70s # Allow time for first scheduled run and cache write
+
+  opnform-client:
+    image: jhumanj/opnform-client:1.13.2
+    environment:
+      NUXT_PUBLIC_APP_URL: /
+      NUXT_PUBLIC_API_BASE: https://${FORMSPREFIX:-}.${DOMAIN:-}/api
+      NUXT_PRIVATE_API_BASE: https://${FORMSPREFIX:-}.${DOMAIN:-}/api
+      NUXT_API_SECRET: ${FORMS_NUXT_API_SECRET:-}
+      HOST: 0.0.0.0
+      PORT: 3000
+    depends_on:
+      opnform-api:
+        condition: service_healthy
+    healthcheck:
+      test:
+        ["CMD-SHELL", "wget --spider -q http://localhost:3000/login || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 45s
+
+  opnform-redis:
+    image: redis:7
+    volumes:
+      - opnform-redis-data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
+      interval: 30s
+      timeout: 5s
+
+  opnform-db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: ${FORMS_DB_DATABASE:-}
+      POSTGRES_USER: ${FORMS_DB_USERNAME:-}
+      POSTGRES_PASSWORD: ${FORMS_DB_PASSWORD:-}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${FORMS_DB_USERNAME:-forge} -d ${FORMS_DB_DATABASE:-}"]
+      interval: 30s
+      timeout: 5s
+    volumes:
+      - opnform-postgres-data:/var/lib/postgresql/data
+
+volumes:
+  opnform-postgres-data:
+  opnform-storage:
+  opnform-redis-data:

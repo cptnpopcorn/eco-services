@@ -3,6 +3,8 @@ services:
     env_file:
       - ../../components/librebooking/nginx/librebooking.env
   nginx:
+    depends_on:
+      - librebooking
     env_file:
       - ../../components/librebooking/nginx/librebooking.env
     volumes:

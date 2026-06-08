@@ -1,0 +1,15 @@
+services:
+  certbot_init:
+    env_file:
+      - ../../components/opnform/nginx/opnform.env
+  nginx:
+    depends_on:
+      - opnform-client
+    env_file:
+      - ../../components/opnform/nginx/opnform.env
+    volumes:
+      - ../../components/opnform/nginx/templates/opnform.conf.template:/etc/nginx/templates/opnform.conf.template
+    networks:
+      default:
+        aliases:
+          - "${FORMSPREFIX:-}.${DOMAIN}"

@@ -5,9 +5,11 @@ include:
     - ../../components/mqtt/docker-compose-certbot-nginx.override.yml
     - ../../components/librebooking/docker-compose-certbot-nginx.override.yml
     - ../../components/bam-web-static/docker-compose-certbot-nginx.override.yml
+    - ../../components/opnform/docker-compose-certbot-nginx.override.yml
     env_file:
       - ../../secrets/common/common.env
       - ../../secrets/services/services.env
+      - ../../components/opnform/nginx/opnform.env
   - path:
     - ../../components/self-signed-certificate/docker-compose.yml
     - ../../components/door-controller/docker-compose-self-signed-certificate.override.yml
@@ -44,3 +46,10 @@ include:
     env_file:
       - ../../secrets/common/common.env
       - ../../secrets/services/services.env
+  - path:
+    - ../../components/opnform/docker-compose.yml
+    env_file:
+      - ../../secrets/common/common.env
+      - ../../secrets/services/services.env
+      - ../../components/opnform/opnform.env
+      - ../../components/opnform/nginx/opnform.env
