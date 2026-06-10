@@ -29,8 +29,10 @@ services:
       BROADCAST_CONNECTION: log
       CACHE_STORE: file
       QUEUE_CONNECTION: sync
-      SESSION_DRIVER: file
+      SESSION_DRIVER: redis
       SESSION_LIFETIME: 120
+      SESSION_DOMAIN: ${FORMSPREFIX:-}.${DOMAIN:-}
+      SESSION_SECURE_COOKIE: true
       REDIS_PASSWORD: null
       REDIS_PORT: 6379
       MAIL_MAILER: ${FORMS_MAIL_MAILER:-}
@@ -48,9 +50,10 @@ services:
       JWT_TTL: 10080
       JWT_REMEMBER_TTL: 43200
       JWT_SECRET: ${FORMS_JWT_SECRET:-}
+      JWT_SKIP_IP_UA_VALIDATION: true
       APP_ENV: production
       APP_DEBUG: false
-      APP_URL: https://nginx
+      APP_URL: https://${FORMSPREFIX:-}.${DOMAIN:-}
       APP_KEY: ${FORMS_APP_KEY}
       # Database settings
       DB_HOST: opnform-db
